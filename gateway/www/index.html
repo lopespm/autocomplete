@@ -1,0 +1,88 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+
+	<title>Autocomplete - Search</title>
+	<meta name="description" content="Autocomplete - Search">
+	<meta name="author" content="Pedro Lopes">
+
+	<link rel="stylesheet" href="awesomplete/awesomplete.css" />
+	<link rel="stylesheet" href="css/styles.css" />
+	<script src="awesomplete/awesomplete.js"></script>
+
+</head>
+
+<body>
+
+	<div class="container">
+		<p> Type a search term:</p>
+		<div>
+			<form id="searchForm" action="#">
+				<input id="searchInput" class="awesomplete" style="width: 350px">
+				<button type="submit">Submit Search</button>
+			</form>
+		</div>
+		<br>
+		<br>
+		<hr/>
+		<p id="status"><i>Note</i>: No suggestions will be available before setup/bootstrap of the system. Refer to the README in this repository for more details.</p>
+	</div>
+
+	<script>
+	const init = () => {
+		const input = document.getElementById("searchInput");
+		const form = document.getElementById("searchForm");
+		const status = document.getElementById("status");
+		const awesomplete = new Awesomplete( input, { tabSelect: true, minChars: 1 , sort: false} );
+		var previousInput = "";
+
+		function formatCurrentDate() {
+			let date = new Date()
+			return `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}:${date.getMilliseconds()}`
+		}
+
+		function fetchTopPhrases() {
+			if (input.value == previousInput) {
+				return
+			}
+
+			const ajax = new XMLHttpRequest();
+			ajax.onload = () => {
+				let list = [];
+				if ( 200 === ajax.status ) {
+					resposeBody = JSON.parse(ajax.responseText)
+					topPhrases = resposeBody.data.top_phrases
+					awesomplete.list = topPhrases
+					status.innerHTML = `[${formatCurrentDate()}] Succesfully fetched top phrases: ${topPhrases}`;
+				} else {
+					status.innerHTML = `[${formatCurrentDate()}] The backend is not ready yet. If you just ran the <i>do_mapreduce_tasks</i>, please wait about a minute for the <i>trie-backend-applier</i> to kick in. Refer to the README in this repository for more information.<br> Details: ${ajax.responseText}`;
+				}
+			};
+			const endpointURL = 'http://localhost/top-phrases?prefix=' + input.value;
+			ajax.open( 'GET', endpointURL, true );
+			ajax.send();
+			previousInput = input.value
+		}
+		
+		form.addEventListener('submit', function(e){
+			let searchedPhrase = input.value;
+
+			const request = new XMLHttpRequest();
+			request.open( 'POST', 'http://localhost/search?phrase=' + searchedPhrase, true );
+			request.send();
+
+			status.innerHTML = `[${formatCurrentDate()}] You've submitted the search phrase <b><i>${searchedPhrase}</i></b>. This phrase was sent to the gateway via <i>http://localhost:80/search/phrase=${searchedPhrase}</i>, which forwards it to assembler.collector-load-balancer`;
+
+			e.preventDefault();
+			return false;
+		});
+
+		input.addEventListener('keyup', fetchTopPhrases );
+	};
+	init();
+	</script> 
+
+</body>
+</html>

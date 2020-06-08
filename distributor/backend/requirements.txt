@@ -1,0 +1,5 @@
+falcon==2.0.0
+gunicorn==20.0.4
+apscheduler==3.6.3
+kazoo==2.8.0
+hdfs==2.5.8

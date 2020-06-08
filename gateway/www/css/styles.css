@@ -1,0 +1,21 @@
+html *
+{
+   font-size: 1em;
+   color: #000 !important;
+   font-family: "Helvetica Neue" !important;
+}
+
+button {
+	height: 26.45px;
+	margin: 0px;
+	margin-left: 5px;
+}
+
+hr {
+	border: 1px solid #eee
+}
+
+.container {
+	margin-top: 20px;
+	margin-left: 20px;
+}

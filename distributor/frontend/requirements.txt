@@ -2,4 +2,4 @@ falcon==2.0.0
 gunicorn==20.0.4
 kazoo==2.8.0
 requests==2.24.0
-redis==3.5.3
+redis==4.5.3

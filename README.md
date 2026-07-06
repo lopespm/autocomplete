@@ -1,6 +1,11 @@
 # Implementation: Autocomplete/Typeahead Suggestions System Design
 
-![Autocomplete Implementation System Design Intro Image](https://user-images.githubusercontent.com/3640622/89044441-e108b280-d341-11ea-8b12-974192c78773.png)
+<p align="center">
+  <a href="https://youtu.be/UFr5Mb7YXRg">
+    <img src="https://github.com/user-attachments/assets/eaf9670e-7f18-4e9f-add5-647dffd29284" alt="Watch the video" width="600" height="314">
+  </a>
+</p>
+
 
 Implementation of a large scale autocomplete/typeahead suggestions system design, like the suggestions one gets when typing a Google search. Using Docker Compose.
 
